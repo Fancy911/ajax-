@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>请求超时与网络异常</title>
+    <style>
+        #result {
+            width: 200px;
+            height: 100px;
+            border: 1px solid #90b;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <button>点击发送请求</button>
+    <div id="result"></div>
+    <script>
+        const btn = document.querySelector('button');
+        const div = document.getElementById('result');
+        // 绑定点击事件
+        btn.onclick = function () {
+            const xhr = new XMLHttpRequest();
+            // 设置请求超时时间 2s，表示如果 2s 内没有响应，就会触发超时事件，请求就会被终止
+            xhr.timeout = 2000;
+            // 超时回调
+            xhr.ontimeout = function () {
+                div.innerHTML = '请求超时';
+            }
+            // 网络异常回调
+            xhr.onerror = function () {
+                div.innerHTML = '网络异常';
+            }
+            xhr.open('GET', 'http://localhost:8000/delay'); // 为了避免缓存, 在请求地址后面加上时间戳
+            xhr.send();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    div.innerHTML = xhr.response;
+                }
+            }
+        }
+    </script>
+</body>
+</html>

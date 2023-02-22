@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>重复请求问题</title>
+</head>
+<body>
+    <button>点击发送请求</button>
+    <!-- 重复请求问题，当用户点击发送请求按钮后，如果请求还没有响应，
+        用户又点击了发送请求按钮，那么就会出现重复请求的问题 -->
+    <script>
+        var btn = document.querySelector('button');
+        var xhr = null;
+        // 定义一个变量，用于记录当前是否有请求正在发送
+        var isSending = false;
+        btn.onclick = function () {
+            // 判断当前是否有请求正在发送，则直接取消本次请求，然后创建新的请求
+            if (isSending) {
+                xhr.abort();
+            }
+            xhr = new XMLHttpRequest();
+            // 修改变量的值，表示当前有请求正在发送
+            isSending = true;
+            xhr.open('GET', 'http://localhost:8000/delay'); // 为了避免缓存, 在请求地址后面加上时间戳
+            xhr.send();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    // 请求响应后，再将变量的值修改为 false，表示当前没有请求正在发送
+                    isSending = false;
+                }
+            }
+        }
+    </script>
+</body>
+</html>

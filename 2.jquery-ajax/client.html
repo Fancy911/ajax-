@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery发送ajax请求</title>
+    <!-- bootstrap依赖 -->
+    <link crossorigin="anonymous" href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jquery依赖 -->
+    <script crossorigin="anonymous" src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2 class="page-header">jQuery发送ajax请求</h2>
+        <button class="btn btn-primary">GET</button>
+        <button class="btn btn-danger">POST</button>
+        <button class="btn btn-info">通用型方法ajax</button>
+    </div>
+    <script>
+        // get请求
+        $('button').eq(0).click(function(){
+            $.get('http://localhost:8000/jquery-server', {a:100, b:200}, function(data){
+                console.log(data); // 这个data就是服务器返回的数据，响应体
+            },'json');
+        });
+        // post请求
+        $('button').eq(1).click(function(){
+            $.post('http://localhost:8000/jquery-server', {a:100, b:200}, function(data){
+                console.log(data); // 这个data就是服务器返回的数据，响应体
+            },'json');
+        });
+        // 通用型方法ajax
+        $('button').eq(2).click(function(){
+            $.ajax({
+                // url: 'http://localhost:8000/jquery-server', 
+                url: 'http://localhost:8000/delay', 
+                data: {a:100, b:200}, 
+                dataType: 'json', // 服务器返回的数据类型
+                type: 'GET',
+                success: function(data){
+                    console.log(data); // 这个data就是服务器返回的数据，响应体
+                }, 
+                // 超时时间
+                // timeout: 2000,
+                // 失败的回调：超时、网络错误、404、500
+                error: function(){
+                    console.log('出错啦!!');
+                },
+                // 请求头信息
+                headers: {
+                    c:300,
+                    d:400
+                }
+            });
+        });
+    </script>
+</body>
+</html>

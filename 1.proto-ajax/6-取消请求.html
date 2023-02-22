@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>取消请求</title>
+</head>
+<body>
+    <button>点击发送请求</button>
+    <button>点击取消请求</button>
+    <script>
+        const btns = document.querySelectorAll('button');
+        const sendBtn = btns[0];
+        const cancelBtn = btns[1];
+        var xhr = null;
+        // 发送按钮绑定点击事件
+        sendBtn.onclick = function () {
+            xhr = new XMLHttpRequest();
+            xhr.open('GET', 'http://localhost:8000/delay'); // 为了避免缓存, 在请求地址后面加上时间戳
+            xhr.send();
+        }
+        // 取消按钮绑定点击事件
+        cancelBtn.onclick = function () {
+            xhr.abort();  // abort()是 XMLHttpRequest 的一个方法，用于取消请求
+        }
+    </script>
+</body>
+</html>
